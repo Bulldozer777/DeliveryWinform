@@ -9,7 +9,7 @@ namespace Delivery_Winform.Model.OrderModel.Abstractions
     public interface IOrder
     {
         public int Id { get; set; }
-        public int Weight { get; set; }
+        public double Weight { get; set; }
         public int CityDistrict { get; set; }
         public DateTime DeliveryDateTime { get; set; }
 

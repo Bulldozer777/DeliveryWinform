@@ -22,7 +22,7 @@ namespace Delivery_Winform
         public Form1()
         {
             InitializeComponent();
-            Bind_DataGridView_Using_DeliveryService_DB();
+            DataWorker.Bind_DataGridView_Using_DeliveryService_DB(DataWorker.ReadOrdersFromDBDeliveryService(), dataGridView1);
             int count = 0;
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
@@ -34,71 +34,97 @@ namespace Delivery_Winform
                 }
             }
         }
-        private void Bind_DataGridView_Using_DeliveryService_DB()
+        private void Bind_DataGridView_Using_DeliveryService_DB(List<Order> orders)
         {
-            using (Data.ApplicationContext db = new Data.ApplicationContext())
+            DataTable table = new DataTable();
+            table.Columns.Add("Id", typeof(int));
+            table.Columns.Add("Weight", typeof(double));
+            table.Columns.Add("CityDistrict", typeof(int));
+            table.Columns.Add("DeliveryDateTime", typeof(string));
+            //var orders = db.Orders.ToList();
+            foreach (Order u in orders)
             {
-                DataTable table = new DataTable();
-                table.Columns.Add("Id", typeof(int));
-                table.Columns.Add("Weight", typeof(int));
-                table.Columns.Add("CityDistrict", typeof(int));
-                table.Columns.Add("DeliveryDateTime", typeof(string));
-                var orders = db.Orders.ToList();
-                foreach (Order u in orders)
-                {
-                    table.Rows.Add(u.Id, u.Weight, u.CityDistrict, u.DeliveryDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
-                }
-                dataGridView1.DataSource = table;
+                table.Rows.Add(u.Id, u.Weight, u.CityDistrict, u.DeliveryDateTime.ToString("yyyy-MM-dd HH:mm:ss"));
             }
+            dataGridView1.DataSource = table;
         }
         //Add
         private void button1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (textBoxWeight.Text == "" || textBoxCityDistrict.Text == "" ||
-            textBoxDeliveryDate.Text == "")
-                {
-                    MessageBox.Show("Не удалось создать объект Order, \nнеобходимые поля для создания объекта либо пустые, либо заполнены неправильно\n" +
-                        "Заполните поля \"Weight\", \"CityDistrict\", \"DeliveryDate\"\n" +
-                        "\"Weight\" - 1-100,  \"CityDistrict\" - 100-1000 c шагом 100, \"DeliveryDate\" - \"yyyy-MM-dd HH:mm:ss\"");
-                }
-                else
-                {
-                    ValidationData _validationDate = new ValidationData(textBoxDeliveryDate.Text);
-                    if (ValidationData.IsCheckedValidation(_validationDate))
-                    {
-                        Order order = new Order(Convert.ToInt32(textBoxWeight.Text),
-                        Convert.ToInt32(textBoxCityDistrict.Text), Convert.ToDateTime(textBoxDeliveryDate.Text));
-                        var context = new ValidationContext(order);
-                        var results = new List<ValidationResult>();
-                        if (!Validator.TryValidateObject(order, context, results, true))
-                        {
-                            MessageBox.Show("Не удалось создать заказ");
-                            foreach (var error in results)
-                            {
-                                MessageBox.Show(error.ErrorMessage);
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show($"Заказ успешно создан.");
-                            using (Data.ApplicationContext db = new Data.ApplicationContext())
-                            {
-                                db.Orders.Add(order);
-                                db.SaveChanges();
-                            }
-                            Logger.WriteLog("Добавление новой записи в таблицу Orders", 100, "Добавление нового объекта произведено без ошибок");
-                            Bind_DataGridView_Using_DeliveryService_DB();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.WriteLog("Добавление нового заказа", 300, ex.Message);
-                MessageBox.Show(ex.Message);
-            }
+            //if(DataWorker.IsCheckedData(textBoxWeight.Text) && DataWorker.IsCheckedData(textBoxWeight.Text))
+            DataWorker.AddOrdersInDBDeliveryService(textBoxWeight.Text, textBoxCityDistrict.Text, textBoxDeliveryDate.Text,
+                dataGridView1);
+            //try
+            ////{
+            //if (DataWorker.IsCheckedData(textBoxWeight.Text) && DataWorker.IsCheckedData(textBoxCityDistrict.Text) &&
+            //DataWorker.IsCheckedData(textBoxDeliveryDate.Text))
+            //{
+            //    ValidationData _validationWeight = new ValidationData(Convert.ToDouble(textBoxWeight.Text));
+            //    ValidationData _validationCityDistrict = new ValidationData(Convert.ToInt32(textBoxCityDistrict.Text));
+            //    ValidationData _validationDate = new ValidationData(textBoxDeliveryDate.Text);
+            //    if (ValidationData.IsCheckedValidation(_validationWeight) || ValidationData.IsCheckedValidation(_validationCityDistrict)
+            //        || ValidationData.IsCheckedValidation(_validationDate))
+            //    {
+            //        Order order = new Order(Convert.ToDouble(textBoxWeight.Text),
+            //        Convert.ToInt32(textBoxCityDistrict.Text), Convert.ToDateTime(textBoxDeliveryDate.Text));
+            //        var context = new ValidationContext(order);
+            //        var results = new List<ValidationResult>();
+            //        if (!Validator.TryValidateObject(order, context, results, true))
+            //        {
+            //            MessageBox.Show("Не удалось создать заказ");
+            //            foreach (var error in results)
+            //            {
+            //                MessageBox.Show(error.ErrorMessage);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            DataWorker.SaveAddOrdersInDBDeliveryService(order);
+            //            MessageBox.Show($"Заказ успешно создан.");
+            //            Logger.WriteLog("Добавление новой записи в таблицу Orders", 100, "Добавление нового объекта произведено без ошибок");
+            //            Bind_DataGridView_Using_DeliveryService_DB(DataWorker.ReadOrdersFromDBDeliveryService());
+            //        }
+            //    }
+
+
+            //else
+            //{
+
+            //}
+            //if (ValidationData.IsCheckedValidation(_validationDate))
+            //{
+            //    Order order = new Order(Convert.ToInt32(textBoxWeight.Text),
+            //    Convert.ToInt32(textBoxCityDistrict.Text), Convert.ToDateTime(textBoxDeliveryDate.Text));
+            //    var context = new ValidationContext(order);
+            //    var results = new List<ValidationResult>();
+            //    if (!Validator.TryValidateObject(order, context, results, true))
+            //    {
+            //        MessageBox.Show("Не удалось создать заказ");
+            //        foreach (var error in results)
+            //        {
+            //            MessageBox.Show(error.ErrorMessage);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show($"Заказ успешно создан.");
+            //        using (Data.ApplicationContext db = new Data.ApplicationContext())
+            //        {
+            //            db.Orders.Add(order);
+            //            db.SaveChanges();
+            //        }
+            //        Logger.WriteLog("Добавление новой записи в таблицу Orders", 100, "Добавление нового объекта произведено без ошибок");
+            //        Bind_DataGridView_Using_DeliveryService_DB();
+            //    }
+            //}
+            //}
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.WriteLog("Добавление нового заказа", 300, ex.Message);
+            //    MessageBox.Show(ex.Message);
+        //}
+    
         }
         //Filter
         private void button2_Click(object sender, EventArgs e)
@@ -125,7 +151,7 @@ namespace Delivery_Winform
                                 Result result1 = new Result
                                 {
                                     Id_OrderResult = u.Id,
-                                    Weight_OrderResult = u.Weight,
+                                    //Weight_OrderResult = u.Weight,
                                     CityDistrict_OrderResult = u.CityDistrict,
                                     DeliveryDateTime_OrderResult = u.DeliveryDateTime
                                 };
@@ -175,7 +201,7 @@ namespace Delivery_Winform
                         db.Orders.Remove(order);
                         db.SaveChanges();
                         MessageBox.Show("Заказ удален");
-                        Bind_DataGridView_Using_DeliveryService_DB();
+                        Bind_DataGridView_Using_DeliveryService_DB(DataWorker.ReadOrdersFromDBDeliveryService());
                     }
                 }
                 else
@@ -191,7 +217,7 @@ namespace Delivery_Winform
         }
         private void button5_Click(object sender, EventArgs e)
         {
-            Bind_DataGridView_Using_DeliveryService_DB();
+            Bind_DataGridView_Using_DeliveryService_DB(DataWorker.ReadOrdersFromDBDeliveryService());
         }
     }
 }

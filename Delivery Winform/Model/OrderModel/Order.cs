@@ -10,8 +10,8 @@ namespace Delivery_Winform.Model.OrderModel
     {
         public int Id { get; set; }
 
-        [property: Range(1, 100, ErrorMessage = "Вeс должен быть в диапазоне {1}-{2} кг")]
-        public int Weight { get; set; }
+        //[property: Range(1, 100, ErrorMessage = "Вeс должен быть в диапазоне {1}-{2} кг")]
+        public double Weight { get; set; }
 
         [RegularExpression("^(?:10|[1-9])00(?:,\\s*(?:10|[1-9])00)*$", ErrorMessage = "Идентификатор района должен быть в диапазоне 100-1000 и кратным 100")]
         public int CityDistrict { get; set; }
@@ -24,7 +24,7 @@ namespace Delivery_Winform.Model.OrderModel
             CityDistrict = _cityDistrict;
             DeliveryDateTime = _deliveryDateTime;
         }
-        public Order(int weight, int _cityDistrict, DateTime _deliveryDateTime)
+        public Order(double weight, int _cityDistrict, DateTime _deliveryDateTime)
         {         
             Weight = weight;
             CityDistrict = _cityDistrict;

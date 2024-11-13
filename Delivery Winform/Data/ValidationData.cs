@@ -61,23 +61,5 @@ namespace Delivery_Winform.Data
                 return true;
             }
         }
-        public static bool IsCheckedCityDistrict(ValidationData _cityDistrict)
-        {
-            var context = new ValidationContext(_cityDistrict);
-            var results = new List<ValidationResult>();
-            if (!Validator.TryValidateObject(_cityDistrict, context, results, true))
-            {
-                foreach (var error in results)
-                {
-                    MessageBox.Show(error.ErrorMessage);
-                }
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
     }
 }

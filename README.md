@@ -1,7 +1,7 @@
 # Delivery Winform
 Запуск программы осуществляется после компиляции в VS по пути \Delivery Winform\bin\Release\net8.0-windows\Delivery Winform.exe
 При запуске программы Delivery доступно пять полей для ввода
-Weight - ввод ограничен числами 1-100
+Weight - ввод ограничен числами 0.1-70 и наличием только 3 знаков после запятой
 CityDistrict - ввод ограничен числами от 100 до 1000, кратные 100
 DeliveryDate - ввод ограничен под формат даты yyyy-MM-dd HH:mm:ss
 FirstDeliveryDate - ввод ограничен так же как и у DeliveryDate

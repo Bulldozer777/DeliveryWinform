@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             dataGridView1 = new DataGridView();
             button1 = new Button();
             button2 = new Button();
@@ -45,7 +46,9 @@
             textBoxFiltDeliveryDate = new TextBox();
             label6 = new Label();
             button5 = new Button();
+            orderBindingSource = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)orderBindingSource).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
@@ -206,6 +209,10 @@
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
             // 
+            // orderBindingSource
+            // 
+            orderBindingSource.DataSource = typeof(Model.OrderModel.Order);
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -228,9 +235,11 @@
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(dataGridView1);
+            DataBindings.Add(new Binding("DataContext", orderBindingSource, "DeliveryDateTime", true));
             Name = "Form1";
             Text = "Delivery";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)orderBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -254,5 +263,6 @@
         private TextBox textBoxFiltDeliveryDate;
         private Label label6;
         private Button button5;
+        private BindingSource orderBindingSource;
     }
 }

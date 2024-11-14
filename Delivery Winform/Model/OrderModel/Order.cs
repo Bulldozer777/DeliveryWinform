@@ -9,24 +9,19 @@ namespace Delivery_Winform.Model.OrderModel
     public class Order : IOrder
     {
         public int Id { get; set; }
-
-        [property: Range(1, 100, ErrorMessage = "Вeс должен быть в диапазоне {1}-{2} кг")]
-        public int Weight { get; set; }
-
-        [RegularExpression("^(?:10|[1-9])00(?:,\\s*(?:10|[1-9])00)*$", ErrorMessage = "Идентификатор района должен быть в диапазоне 100-1000 и кратным 100")]
+        public double Weight { get; set; }
         public int CityDistrict { get; set; }
-
         public DateTime DeliveryDateTime { get; set; }
-        public Order(int id, int weight, int _cityDistrict, DateTime _deliveryDateTime)
+        public Order(int id, double _weight, int _cityDistrict, DateTime _deliveryDateTime)
         {
             Id = id;
-            Weight = weight;
+            Weight = _weight;
             CityDistrict = _cityDistrict;
             DeliveryDateTime = _deliveryDateTime;
         }
-        public Order(int weight, int _cityDistrict, DateTime _deliveryDateTime)
+        public Order(double _weight, int _cityDistrict, DateTime _deliveryDateTime)
         {         
-            Weight = weight;
+            Weight = _weight;
             CityDistrict = _cityDistrict;
             DeliveryDateTime = _deliveryDateTime;
         }

@@ -1,0 +1,4 @@
+﻿29.10.2024 18:45:55.969 действие: Добавление нового заказа, код: 300, описание: The input string '1e' was not in a correct format. 
+29.10.2024 18:46:31.433 действие: Добавление нового заказа, код: 300, описание: The input string '1e' was not in a correct format. 
+29.10.2024 18:46:33.516 действие: Добавление нового заказа, код: 300, описание: The input string '1e' was not in a correct format. 
+29.10.2024 18:46:35.245 действие: Добавление нового заказа, код: 300, описание: The input string '1e' was not in a correct format. 
